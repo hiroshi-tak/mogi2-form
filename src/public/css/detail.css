@@ -1,0 +1,103 @@
+body {
+    background: #f5f5f5;
+    margin: 0;
+}
+
+.detail-page {
+    max-width: 700px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 0 15px;
+}
+
+.title {
+    font-size: 20px;
+    margin-bottom: 50px;
+    border-left: 4px solid #000;
+    padding-left: 10px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 15px 20px;
+    align-items: center;
+}
+
+.label {
+    width: 150px;
+    color: #555;
+}
+
+.value {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.value-inner {
+    max-width: 320px;
+    width: 100%;
+}
+
+.time-range {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+input[type="time"] {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.submit-btn {
+    background: #000;
+    color: #fff;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.disabled-btn {
+    background-color: #666;
+    color: #fff;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 6px;
+    cursor: not-allowed;
+}
+
+.pending {
+    color: red;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.success {
+    color: green;
+    font-size: 12px;
+}

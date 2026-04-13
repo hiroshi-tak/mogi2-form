@@ -1,0 +1,78 @@
+.site-header {
+    background: #000000;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
+
+.header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.header-logo {
+    height: 40px;
+}
+
+.header-center {
+    flex: 1;
+    padding: 0 30px;
+}
+
+.search-form input {
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.header-right-item {
+    font-size: 16px;
+    color: white;
+    text-decoration: none;
+}
+
+.header-right-item:hover {
+    color: #e04848;
+}
+
+.header-logout-btn {
+    background: black;
+    color: white;
+    padding: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    border: none;
+}
+
+.header-logout-btn:hover {
+    color: #e04848;
+}
+
+@media (min-width: 768px) and (max-width: 850px) {
+
+    .header-inner {
+        flex-wrap: wrap;
+    }
+
+    .header-center {
+        order: 3;
+        width: 100%;
+        padding: 10px 0 0 0;
+    }
+
+    .header-right {
+        gap: 10px;
+    }
+
+}
