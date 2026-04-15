@@ -48,7 +48,10 @@ class Attendance extends Model
         if (!$this->clock_in) return self::STATUS_OFF;
 
         if (!$this->clock_out) {
-            $latestBreak = $this->breaks()->latest()->first();
+            $latestBreak = $this->breaks()
+                ->orderByDesc('start_time')
+                ->orderByDesc('id')
+                ->first();
 
             if ($latestBreak && !$latestBreak->end_time) {
                 return self::STATUS_BREAK;

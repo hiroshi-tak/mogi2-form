@@ -8,8 +8,16 @@
 <div class="container">
     <div class="inner">
         <p class="status">{{$status}}</p>
-        <div class="date" id="date"></div>
-        <div class="time" id="clock"></div>
+        <div class="date" id="date">
+            <span class="test">
+                {{ now()->format('Y年n月j日') }}
+            </span>
+        </div>
+        <div class="time" id="clock">
+            <span class="test">
+                {{ now()->format('H:i') }}
+            </span>
+        </div>
 
         @switch($status)
 

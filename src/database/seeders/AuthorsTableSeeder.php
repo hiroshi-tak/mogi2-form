@@ -90,7 +90,6 @@ class AuthorsTableSeeder extends Seeder
 
                 $request = AttendanceRequest::create([
                     'attendance_id' => $att->id,
-                    //'user_id'       => $userId,
                     'clock_in'      => '09:30:00',
                     'clock_out'     => '18:30:00',
                     'note'          => '申請中データ',
@@ -109,7 +108,6 @@ class AuthorsTableSeeder extends Seeder
 
                 $request = AttendanceRequest::create([
                     'attendance_id' => $att->id,
-                    //'user_id'       => $userId,
                     'clock_in'      => '08:45:00',
                     'clock_out'     => '17:45:00',
                     'note'          => '承認済データ',

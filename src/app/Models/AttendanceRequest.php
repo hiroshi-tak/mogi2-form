@@ -11,7 +11,6 @@ class AttendanceRequest extends Model
 
     protected $fillable = [
         'attendance_id',
-        'user_id',
         'clock_in',
         'clock_out',
         'note',

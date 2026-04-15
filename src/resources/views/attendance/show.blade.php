@@ -17,7 +17,7 @@
         <div class="card">
             <div class="row">
                 <div class="label">名前</div>
-                <div class="value">{{ $user->name}}</div>
+                <div class="value">{{ $user->name }}</div>
             </div>
 
             <div class="row">

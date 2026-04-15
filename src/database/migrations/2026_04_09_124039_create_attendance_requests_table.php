@@ -16,7 +16,6 @@ class CreateAttendanceRequestsTable extends Migration
         Schema::create('attendance_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('attendance_id');
-            //$table->foreignId('user_id');
             $table->time('clock_in')->nullable();
             $table->time('clock_out')->nullable();
             $table->text('note')->nullable();
