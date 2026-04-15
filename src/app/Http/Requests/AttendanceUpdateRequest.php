@@ -44,7 +44,7 @@ class AttendanceUpdateRequest extends FormRequest
             'clock_out.date_format' => '退勤時間を時間形式にしてください。',
             'breaks.*.start.date_format' => '休憩開始時間を時間形式にしてください。',
             'breaks.*.end.date_format'   => '休憩終了時間を時間形式にしてください。',
-            'note.required' => '備考を入力してください。',
+            'note.required' => '備考を記入してください。',
         ];
     }
 

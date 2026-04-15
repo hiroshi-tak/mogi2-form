@@ -13,7 +13,6 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
-/docker/mysql/data/
 .env.*
 !.env.example
 *.key
