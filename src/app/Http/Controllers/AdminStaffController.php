@@ -10,6 +10,17 @@ use App\Helpers\DateHelper;
 
 class AdminStaffController extends Controller
 {
+    private function getMonthlyAttendances($userId, $month)
+    {
+        return Attendance::with('breaks')
+            ->where('user_id', $userId)
+            ->whereYear('date', $month->year)
+            ->whereMonth('date', $month->month)
+            ->orderBy('date')
+            ->get()
+            ->keyBy(fn($item) => $item->date->format('Y-m-d'));
+    }
+
     public function index()
     {
         $users = User::all();
@@ -27,15 +38,7 @@ class AdminStaffController extends Controller
 
         $dates = DateHelper::getMonthDays($month);
 
-        $attendances = Attendance::with('breaks')
-            ->where('user_id', $id)
-            ->whereYear('date', $month->year)
-            ->whereMonth('date', $month->month)
-            ->orderBy('date')
-            ->get()
-            ->keyBy(function ($item) {
-                return $item->date->format('Y-m-d');
-            });
+        $attendances = $this->getMonthlyAttendances($id, $month);
 
         return view('admin.staff.show', compact('user', 'attendances', 'month', 'dates'));
     }
@@ -48,16 +51,9 @@ class AdminStaffController extends Controller
             ? Carbon::parse($request->month)
             : now();
 
-        $dates = \App\Helpers\DateHelper::getMonthDays($month);
+        $dates = DateHelper::getMonthDays($month);
 
-        $attendances = Attendance::with('breaks')
-            ->where('user_id', $id)
-            ->whereYear('date', $month->year)
-            ->whereMonth('date', $month->month)
-            ->get()
-            ->keyBy(function ($item) {
-                return $item->date->format('Y-m-d');
-            });
+        $attendances = $this->getMonthlyAttendances($id, $month);
 
         $filename = $user->name . '_' . $month->format('Y_m') . '.csv';
 

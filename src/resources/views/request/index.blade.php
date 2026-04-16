@@ -57,7 +57,7 @@
                     </td>
 
                     <td>
-                        <a href="{{ route('attendance.show', $req->attendance->date->format('Y-m-d')) }}">
+                        <a href="{{ route('attendance.show', ['id' => $req->attendance->date->format('Y-m-d'),'from' => 'request']) }}">
                             詳細
                         </a>
                     </td>

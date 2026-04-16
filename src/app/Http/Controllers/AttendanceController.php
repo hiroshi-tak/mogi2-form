@@ -15,7 +15,7 @@ class AttendanceController extends Controller
 
     public function index()
     {
-        $attendance = $this->getTodayAttendance()?->fresh();
+        $attendance = $this->getTodayAttendance();
 
         $status = $attendance?->status ?? '勤務外';
 
@@ -24,7 +24,7 @@ class AttendanceController extends Controller
 
     public function clockIn()
     {
-        $attendance = $this->getTodayAttendance()?->fresh();
+        $attendance = $this->getTodayAttendance();
 
         if ($attendance && $attendance->clock_in) {
             return redirect()->route('attendance.index')->withErrors('既に出勤済みです');
@@ -41,7 +41,7 @@ class AttendanceController extends Controller
 
     public function clockOut()
     {
-        $attendance = $this->getTodayAttendance()?->fresh();
+        $attendance = $this->getTodayAttendance();
 
         if (!$attendance) {
             return redirect()->route('attendance.index')->withErrors('出勤していません');
@@ -60,7 +60,7 @@ class AttendanceController extends Controller
 
     public function breakStart()
     {
-        $attendance = $this->getTodayAttendance()?->fresh();
+        $attendance = $this->getTodayAttendance();
 
         if (!$attendance) {
             return redirect()->route('attendance.index')->withErrors('出勤していません');

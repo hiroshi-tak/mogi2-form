@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -34,7 +35,7 @@ class StaffController extends Controller
         ));
     }
 
-    public function show($id)
+    public function show($id, Request $request)
     {
         $date = Carbon::parse($id);
 
@@ -45,7 +46,10 @@ class StaffController extends Controller
             ->whereDate('date', $date)
             ->first();
 
-        $pendingRequest = $attendance?->pendingRequest;
+        $pendingRequest = null;
+        if ($request->from === 'request' && $attendance) {
+            $pendingRequest = $attendance->pendingRequest;
+        }
 
         return view('attendance.show', compact('attendance', 'date', 'pendingRequest', 'user'));
     }
@@ -54,27 +58,29 @@ class StaffController extends Controller
     {
         $date = Carbon::parse($id)->toDateString();
 
-        $attendance = Attendance::firstOrCreate(
-            [
-                'user_id' => Auth::id(),
-                'date' => $date,
-            ]
-        );
+        DB::transaction(
+            function () use ($request, $date) {
 
-        $req = AttendanceRequest::create([
-            'attendance_id' => $attendance->id,
-            'clock_in' => $request->clock_in
-                ? Carbon::parse($date . ' ' . $request->clock_in)
-                : null,
-            'clock_out' => $request->clock_out
-                ? Carbon::parse($date . ' ' . $request->clock_out)
-                : null,
-            'note' => $request->note,
-            'status' => 'pending'
-        ]);
+            $attendance = Attendance::firstOrCreate(
+                [
+                    'user_id' => Auth::id(),
+                    'date' => $date,
+                ]
+            );
 
-        if ($request->breaks) {
-            foreach ($request->breaks as $break) {
+            $req = AttendanceRequest::create([
+                'attendance_id' => $attendance->id,
+                'clock_in' => $request->clock_in
+                    ? Carbon::parse($date . ' ' . $request->clock_in)
+                    : null,
+                'clock_out' => $request->clock_out
+                    ? Carbon::parse($date . ' ' . $request->clock_out)
+                    : null,
+                'note' => $request->note,
+                'status' => 'pending'
+            ]);
+
+            foreach ($request->breaks ?? [] as $break) {
 
                 if (empty($break['start'])) continue;
 
@@ -85,7 +91,7 @@ class StaffController extends Controller
                         : null,
                 ]);
             }
-        }
+        });
 
         return redirect()->route('request.index');
     }

@@ -31,39 +31,42 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse($attendances as $attendance)
+                @forelse($users as $user)
+
+                @php
+                $attendance = $user->attendances->first();
+                @endphp
+
                 <tr>
-                    <td>{{ $attendance->user->name }}</td>
+                    <td>{{ $user->name }}</td>
 
                     {{-- 出勤 --}}
                     <td>
-                        {{ $attendance->clock_in?->format('H:i') ?? '-' }}
+                        {{ $attendance?->clock_in?->format('H:i') ?? '' }}
                     </td>
 
                     {{-- 退勤 --}}
                     <td>
-                        {{ $attendance->clock_out?->format('H:i') ?? '-' }}
+                        {{ $attendance?->clock_out?->format('H:i') ?? '' }}
                     </td>
 
                     {{-- 休憩 --}}
                     <td>
-                        {{ gmdate('H:i', $attendance->break_seconds) }}
+                        {{ $attendance?->break_seconds ? gmdate('H:i', $attendance->break_seconds) : '' }}
                     </td>
 
                     {{-- 合計 --}}
                     <td>
-                        @if($attendance->clock_in && $attendance->clock_out)
-                        {{ gmdate('H:i', $attendance->work_seconds) }}
-                        @else
-                        -
-                        @endif
+                        {{ $attendance?->work_seconds ? gmdate('H:i', $attendance->work_seconds) : '' }}
                     </td>
 
                     {{-- 詳細 --}}
                     <td>
-                        <a href="{{ route('admin.attendance.show', ['id' => $attendance->date->format('Y-m-d'),'user_id' => $attendance->user_id]) }}">
-                            詳細
-                        </a>
+                        @if($date->lt(now()->startOfDay()))
+                            <a href="{{ route('admin.attendance.show', ['id' => $date->format('Y-m-d'),'user_id' => $user->id]) }}">
+                                詳細
+                            </a>
+                        @endif
                     </td>
                 </tr>
                 @empty

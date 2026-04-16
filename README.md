@@ -36,6 +36,7 @@
 10. php artisan key:generate --env=testing
 11. php artisan config:clear
 12. php artisan migrate --env=testing
+13. mkdir -p tests/Unit
 
 ### 管理者・一般ユーザー登録について
 管理者は一人登録
@@ -79,6 +80,13 @@
 - Laravel 8.83.8
 - MySQL 8.0.26
 - nginx 1.21.1
+
+## 要件未記載対応
+* 表示
+  * 勤怠一覧の詳細ボタンは本日以降未表示とした
+  * 管理者で勤怠詳細修正時、"更新しました"と表示するようにした
+* バリデーション
+  * 休憩時間の重複追加した
 
 ## ER図
 

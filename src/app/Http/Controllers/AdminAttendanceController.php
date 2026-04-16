@@ -16,12 +16,11 @@ class AdminAttendanceController extends Controller
             ? Carbon::parse($request->date)
             : now();
 
-        $attendances = Attendance::with(['user', 'breaks'])
-            ->whereNotNull('clock_in')
-            ->whereDate('date', $date)
-            ->get();
+        $users = User::with(['attendances' => function ($q) use ($date) {
+            $q->whereDate('date', $date);
+        }])->get();
 
-        return view('admin.attendance.index', compact('attendances', 'date'));
+        return view('admin.attendance.index', compact('users', 'date'));
     }
 
     public function show($id, Request $request)
@@ -34,10 +33,17 @@ class AdminAttendanceController extends Controller
             ->whereDate('date', $date)
             ->first();
 
-        $isPending = $attendance
-            ? \App\Models\AttendanceRequest::where('attendance_id', $attendance->id)
-            ->where('status', 'pending')
-            ->exists()
+        if (!$attendance) {
+            $attendance = new Attendance([
+                'date' => $date,
+                'user_id' => $user->id,
+            ]);
+        }
+
+        $isPending = $attendance && $attendance->exists
+            ? $attendance->requests()
+                ->where('status', 'pending')
+                ->exists()
             : false;
 
         return view('admin.attendance.show', compact('attendance', 'date', 'user', 'isPending'));

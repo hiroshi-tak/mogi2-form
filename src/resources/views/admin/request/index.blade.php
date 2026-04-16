@@ -33,7 +33,7 @@
             </thead>
 
             <tbody>
-                @forelse($requests as $request)
+                @forelse($attendanceRequests as $request)
                 <tr>
                     <td>
                         <span class="status {{ $request->status }}">
