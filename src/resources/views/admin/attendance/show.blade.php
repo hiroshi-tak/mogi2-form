@@ -55,18 +55,18 @@
                 <div class="value">
                     <div class="time-range value-inner">
                         <input type="time"
-                            name="breaks[{{ $i }}][start]"
-                            value="{{ old("breaks.$i.start", $break->start_time?->format('H:i')) }}">
+                            name="breaks[{{ $break->id }}][start]"
+                            value="{{ old("breaks.$break->id.start", $break->start_time?->format('H:i')) }}">
                         <span>〜</span>
                         <input type="time"
-                            name="breaks[{{ $i }}][end]"
-                            value="{{ old("breaks.$i.end", $break->end_time?->format('H:i')) }}">
+                            name="breaks[{{ $break->id }}][end]"
+                            value="{{ old("breaks.$break->id.end", $break->end_time?->format('H:i')) }}">
                     </div>
                     <div class="error">
-                        @if ($errors->has("breaks.$i.start"))
-                        {{ $errors->first("breaks.$i.start") }}
-                        @elseif ($errors->has("breaks.$i.end"))
-                        {{ $errors->first("breaks.$i.end") }}
+                        @if ($errors->has("breaks.$break->id.start"))
+                        {{ $errors->first("breaks.$break->id.start") }}
+                        @elseif ($errors->has("breaks.$break->id.end"))
+                        {{ $errors->first("breaks.$break->id.end") }}
                         @endif
                     </div>
                 </div>
@@ -83,13 +83,13 @@
                         <input type="time" name="breaks[new_1][end]"
                             value="{{ old('breaks.new_1.end') }}">
                     </div>
-                </div>
-                <div class="error">
-                    @if ($errors->has('breaks.new_1.start'))
-                    {{ $errors->first('breaks.new_1.start') }}
-                    @elseif ($errors->has('breaks.new_1.end'))
-                    {{ $errors->first('breaks.new_1.end') }}
-                    @endif
+                    <div class="error">
+                        @if ($errors->has('breaks.new_1.start'))
+                        {{ $errors->first('breaks.new_1.start') }}
+                        @elseif ($errors->has('breaks.new_1.end'))
+                        {{ $errors->first('breaks.new_1.end') }}
+                        @endif
+                    </div>
                 </div>
             </div>
 

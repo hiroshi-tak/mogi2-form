@@ -18,6 +18,10 @@ class LoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
+            $request->session()->regenerate();
+
+            Auth::guard('web')->logout();
+
             return redirect()->route('admin.attendance.index');
         }
 
@@ -31,4 +35,5 @@ class LoginController extends Controller
         Auth::guard('admin')->logout();
         return redirect('/admin/login');
     }
+
 }

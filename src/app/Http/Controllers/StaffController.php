@@ -46,12 +46,10 @@ class StaffController extends Controller
             ->whereDate('date', $date)
             ->first();
 
-        $pendingRequest = null;
-        if ($request->from === 'request' && $attendance) {
-            $pendingRequest = $attendance->pendingRequest;
-        }
+        $from = $request->from;
+        $pendingRequest = $attendance?->pendingRequest;
 
-        return view('attendance.show', compact('attendance', 'date', 'pendingRequest', 'user'));
+        return view('attendance.show', compact('attendance', 'date', 'pendingRequest', 'user', 'from'));
     }
 
     public function update(AttendanceUpdateRequest $request, $id)

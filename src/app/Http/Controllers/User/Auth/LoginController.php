@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\User\Auth;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller;
 
 class LoginController extends Controller
 {
@@ -32,13 +32,15 @@ class LoginController extends Controller
             ]);
         }
 
+        $request->session()->regenerate();
+
+        Auth::guard('admin')->logout();
+
         $user = Auth::user();
 
         if (is_null($user->email_verified_at)) {
             return redirect()->route('verification.notice');
         }
-
-        $request->session()->regenerate();
 
         return redirect('/attendance');
     }

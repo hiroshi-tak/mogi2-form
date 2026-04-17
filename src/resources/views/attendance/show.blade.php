@@ -27,17 +27,27 @@
                 </div>
             </div>
 
+            @php
+            $isFromRequest = $from === 'request';
+            $clockIn = $isFromRequest
+            ? ($pendingRequest?->clock_in ?? $attendance?->clock_in)
+            : $attendance?->clock_in;
+
+            $clockOut = $isFromRequest
+            ? ($pendingRequest?->clock_out ?? $attendance?->clock_out)
+            : $attendance?->clock_out;
+            @endphp
+
             <div class="row">
                 <div class="label">出勤・退勤</div>
                 <div class="value">
                     <div class="time-range value-inner">
                         <input type="time" name="clock_in"
-                            value="{{ old('clock_in', ($pendingRequest?->clock_in ?? $attendance?->clock_in)?->format('H:i')) }}"
+                            value="{{ old('clock_in', $clockIn?->format('H:i')) }}"
                             @if($pendingRequest) disabled @endif>
                         <span>〜</span>
-
                         <input type="time" name="clock_out"
-                            value="{{ old('clock_out', ($pendingRequest?->clock_out ?? $attendance?->clock_out)?->format('H:i')) }}"
+                            value="{{ old('clock_out', $clockOut?->format('H:i')) }}"
                             @if($pendingRequest) disabled @endif>
                     </div>
                     <div class="error">
@@ -51,8 +61,8 @@
             </div>
 
             @php
-            $breaks = $pendingRequest
-            ? $pendingRequest->breakRequests
+            $breaks = $isFromRequest
+            ? ($pendingRequest?->breakRequests ?? collect())
             : ($attendance?->breaks ?? collect());
             @endphp
 
@@ -64,9 +74,7 @@
                         <input type="time" name="breaks[{{ $i }}][start]"
                             value="{{ old("breaks.$i.start", $break->start_time?->format('H:i')) }}"
                             @if($pendingRequest) disabled @endif>
-
                         <span>〜</span>
-
                         <input type="time" name="breaks[{{ $i }}][end]"
                             value="{{ old("breaks.$i.end", $break->end_time?->format('H:i')) }}"
                             @if($pendingRequest) disabled @endif>
@@ -82,14 +90,13 @@
             </div>
             @endforeach
 
-            @if(!$pendingRequest)
             <div class="row">
                 <div class="label">休憩{{ $breaks->count() + 1 }}</div>
                 <div class="value">
                     <div class="time-range value-inner">
-                        <input type="time" name="breaks[new][start]" value="{{ old('breaks.new.start') }}">
+                        <input type="time" name="breaks[new][start]" value="{{ old('breaks.new.start') }}" @if($pendingRequest) disabled @endif>
                         <span>〜</span>
-                        <input type="time" name="breaks[new][end]" value="{{ old('breaks.new.end') }}">
+                        <input type="time" name="breaks[new][end]" value="{{ old('breaks.new.end') }}" @if($pendingRequest) disabled @endif>
                     </div>
                     <div class="error">
                         @if ($errors->has('breaks.new.start'))
@@ -100,13 +107,18 @@
                     </div>
                 </div>
             </div>
-            @endif
+
+            @php
+            $note = $isFromRequest
+            ? ($pendingRequest?->note ?? $attendance?->note)
+            : $attendance?->note;
+            @endphp
 
             <div class="row">
                 <div class="label">備考</div>
                 <div class="value">
                     <div class="value-inner">
-                        <textarea name="note" @if($pendingRequest) disabled @endif>{{ old('note', $pendingRequest?->note ?? $attendance?->note) }}</textarea>
+                        <textarea name="note" @if($pendingRequest) disabled @endif>{{ old('note', $note) }}</textarea>
                     </div>
                     <div class="error">
                         @error('note')
@@ -118,7 +130,7 @@
         </div>
 
         <div class="actions">
-            @if($attendance && $pendingRequest)
+            @if($pendingRequest)
             <p class="pending">承認待ちのため修正はできません</p>
             @else
             <button class="submit-btn">修正</button>
