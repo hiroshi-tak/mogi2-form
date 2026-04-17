@@ -12,8 +12,9 @@
 
     <div class="day-nav">
         <a href="{{ route('admin.attendance.index', ['date' => $date->copy()->subDay()->format('Y-m-d')]) }}">← 前日</a>
-        <span class="day">
-            <i class="fa-solid fa-calendar-days"></i>
+        <span class="day" style="position: relative;">
+            <i class="fa-solid fa-calendar-days" id="calendar-icon"></i>
+            <input type="date" id="date-picker" value="{{ $date->format('Y-m-d') }}">
             {{ $date->format('Y/m/d') }}
         </span>
         <a href="{{ route('admin.attendance.index', ['date' => $date->copy()->addDay()->format('Y-m-d')]) }}">翌日 →</a>
@@ -63,9 +64,9 @@
                     {{-- 詳細 --}}
                     <td>
                         @if($date->lt(now()->startOfDay()))
-                            <a href="{{ route('admin.attendance.show', ['id' => $date->format('Y-m-d'),'user_id' => $user->id]) }}">
-                                詳細
-                            </a>
+                        <a href="{{ route('admin.attendance.show', ['id' => $date->format('Y-m-d'),'user_id' => $user->id]) }}">
+                            詳細
+                        </a>
                         @endif
                     </td>
                 </tr>
@@ -78,4 +79,25 @@
         </table>
     </div>
 </div>
+
+<script>
+    const picker = document.getElementById('date-picker');
+    const icon = document.getElementById('calendar-icon');
+
+    icon.addEventListener('click', () => {
+        if (picker.showPicker) {
+            picker.showPicker();
+        } else {
+            picker.focus();
+            picker.click();
+        }
+    });
+
+    picker.addEventListener('change', function() {
+        const selectedDate = this.value;
+        if (selectedDate) {
+            window.location.href = "{{ route('admin.attendance.index') }}?date=" + selectedDate;
+        }
+    });
+</script>
 @endsection
